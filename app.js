@@ -356,6 +356,38 @@ app.post('/upload/screensaver', function(req, res) {
   });
 });
 
+app.get('/download/content', function(req, res) {
+  if (fs.existsSync('/data/contentFile.mp4')) {
+    res.download('/data/contentFile.mp4');
+  } else {
+    res.download('/usr/src/app/mediaAssets/NoMedia.mp4');
+  }
+});
+
+app.get('/download/screensaver', function(req, res) {
+  if (fs.existsSync('/data/screensaverFile.mp4')) {
+    res.download('/data/screensaverFile.mp4');
+  } else {
+    res.download('/usr/src/app/mediaAssets/NoMedia.mp4');
+  }
+});
+
+app.get('/delete/content', function(req, res) {
+  if (fs.existsSync('/data/contentFile.mp4')) {
+    fs.unlinkSync('/data/contentFile.mp4');
+    res.redirect('/?message=' + encodeURI('Content deleted.'));
+  } else {
+    res.redirect('/?message=' + encodeURI('Unable to delete content: content does not exist.'));
+  }
+});
+
+app.get('/delete/screensaver', function(req, res) {
+  if (fs.existsSync('/data/screensaverFile.mp4')) {
+    fs.unlinkSync('/data/screensaverFile.mp4');
+  } else {
+    res.redirect('/?message=' + encodeURI('Unable to delete screensaver: screensaver does not exist.'));
+  }
+});
 
 app.get('/view.png', function(req, res) {
   const rand = Math.floor(1000 + Math.random() * 9000);
@@ -371,22 +403,6 @@ app.get('/view.png', function(req, res) {
       }, 30000);
     }
   });
-});
-
-app.get('/download/content', function(req, res) {
-  if (fs.existsSync('/data/contentFile.mp4')) {
-    res.download('/data/contentFile.mp4');
-  } else {
-    res.download('/usr/src/app/mediaAssets/NoMedia.mp4');
-  }
-});
-
-app.get('/download/screensaver', function(req, res) {
-  if (fs.existsSync('/data/screensaverFile.mp4')) {
-    res.download('/data/screensaverFile.mp4');
-  } else {
-    res.download('/usr/src/app/mediaAssets/NoMedia.mp4');
-  }
 });
 
 app.get('/', function(req, res) {
