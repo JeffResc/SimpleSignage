@@ -379,6 +379,7 @@ app.get('/', function(req, res) {
   const appId = process.env.BALENA_APP_ID || 'Unknown';
   const appName = process.env.BALENA_APP_NAME || 'Unknown';
   const deviceType = process.env.BALENA_DEVICE_TYPE || 'Unknown';
+  const deviceName = process.env.BALENA_DEVICE_NAME_AT_INIT || 'Unknown';
   const balenaSupervisorVersion = process.env.BALENA_SUPERVISOR_VERSION || 'Unknown';
   const hostOSVersion = process.env.BALENA_HOST_OS_VERSION || 'Unknown';
   const message = req.query.message;
@@ -415,6 +416,7 @@ app.get('/', function(req, res) {
     appId: appId,
     appName: appName,
     deviceType: deviceType,
+    deviceName: deviceName,
     balenaSupervisorVersion: balenaSupervisorVersion,
     hostOSVersion: hostOSVersion,
     hours: hours,
