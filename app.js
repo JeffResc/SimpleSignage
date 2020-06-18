@@ -277,10 +277,11 @@ app.post('/forms/postHours', function(req, res) {
     }
     console.log(devices);
     devices.forEach(uuid =>  {
-      axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', newBody,
-      auth: {
-        username: login_username,
-        password: login_password
+      axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', newBody, {
+        auth: {
+          username: login_username,
+          password: login_password
+        }
       })
       .then((res) => {
         console.log('Synced hours with ' + uuid + ', code: ' + res.statusCode);
