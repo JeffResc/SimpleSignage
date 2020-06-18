@@ -381,7 +381,10 @@ app.get('/', function(req, res) {
   const deviceType = process.env.BALENA_DEVICE_TYPE || 'Unknown';
   const balenaSupervisorVersion = process.env.BALENA_SUPERVISOR_VERSION || 'Unknown';
   const hostOSVersion = process.env.BALENA_HOST_OS_VERSION || 'Unknown';
-  var message = req.query.message;
+  const message = req.query.message;
+  const contentValid = fs.existsSync("/data/contentFile.mp4")
+  const screenSaverValid = fs.existsSync("/data/screensaverFile.mp4");
+
   var bussHours = {};
   for (i = 0; i <= 6; i++) {
     var openHour = dbHours.__wrapped__.hours[0][i].open.split(':')[0];
@@ -414,7 +417,9 @@ app.get('/', function(req, res) {
     deviceType: deviceType,
     balenaSupervisorVersion: balenaSupervisorVersion,
     hostOSVersion: hostOSVersion,
-    hours: bussHours
+    hours: bussHours,
+    contentValid: contentValid,
+    screenSaverValid: screenSaverValid
   }
   if (typeof message !== 'undefined' && message) {
     resVars.message = message;

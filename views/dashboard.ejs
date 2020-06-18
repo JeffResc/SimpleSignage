@@ -59,7 +59,7 @@
               <div class="card">
                 <div class="card-header">Alert</div>
                 <div class="card-body">
-                  <p><%=  message %></p><button onclick="javascript:$('#messageBox').hide();" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-check"></i> Dismiss</button>
+                  <p><%=  message %></p><button onclick="javascript:$('#messageBox').hide();" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-times"></i> Dismiss</button>
                 </div>
               </div>
             </div>
@@ -96,6 +96,26 @@
                         <tr>
                           <th scope="row">OS Version</th>
                           <td><%= hostOSVersion %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+							<div class="card">
+                <div class="card-header">Content Health</div>
+                <div class="card-body">
+                  <p class="card-title">Determine the health of your current content.</p>
+									<div class="table-responsive">
+                    <table class="table table-striped">
+                      <tbody>
+                        <tr>
+                          <th scope="row">Content</th>
+                          <td>Valid: <i class="fas fa-<%= contentValid ? 'check' : 'times' %>"></i></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Screensaver</th>
+                          <td>Valid: <i class="fas fa-<%= screenSaverValid ? 'check' : 'times' %>"></i></td>
                         </tr>
                       </tbody>
                     </table>
