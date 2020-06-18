@@ -380,7 +380,7 @@ app.get('/', function(req, res) {
   if (typeof req.query.processing !== 'undefined' && req.query.processing == 1) {
     const message = 'Processing your request...';
   } else {
-    const message = req.query.message;
+    const message = req.query.message  || 'undefined';
   }
   var bussHours = {};
   for (i = 0; i <= 6; i++) {
