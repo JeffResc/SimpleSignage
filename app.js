@@ -338,7 +338,7 @@ app.post('/forms/postHours', function(req, res) {
       res.redirect('/');
     }*/
   }
-  res.redirect('/?message=' + encodeURI('Hours successfully updated.')');
+  res.redirect('/?message=' + encodeURI('Hours successfully updated.'));
 });
 
 app.post('/upload/content', function(req, res) {
