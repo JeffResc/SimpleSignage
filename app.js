@@ -181,6 +181,7 @@ function queueJobs() {
       showScreenSaver();
     });
   }
+  console.log('Jobs have been scheduled.');
 }
 queueJobs();
 
@@ -428,9 +429,12 @@ app.get('/view.png', function(req, res) {
 });
 
 var internetConnection = true;
-setInterval(function() {
-  dns.resolve('www.google.com', function(err) {
-    if (err) {
+function checkInternet() {
+  console.log('Checking internet...');
+  var exec = require('child_process').exec, child;
+  child = exec('ping -c 1 8.8.8.8', function(error, stdout, stderr) {
+    if (error !== null)  {
+      console.log('Check failed...');
       if (internetConnection) {
         internetConnection = !internetConnection;
         exec('/usr/src/app/pngview -b 0 -d 0 -l 3 -n -x 25 -y 25 /usr/src/app/mediaAssets/noWiFi.png', (error, stdout, stderr) => {
@@ -440,13 +444,18 @@ setInterval(function() {
         });
       }
     } else {
+      console.log('Check succeeded...');
       if (!internetConnection) {
         internetConnection = !internetConnection;
         exec('killall pngview', (err, stdout, stderr) => {});
       }
     }
   });
+}
+setInterval(function() {
+  checkInternet();
 }, 60 * 1000);
+checkInternet();
 
 app.get('/', function(req, res) {
   const dbHours = db.get('hours');
