@@ -225,6 +225,8 @@ function timeToDb(time) {
 }
 
 app.post('/forms/postHours', function(req, res) {
+  console.log('Recieved updated hours:');
+  console.log(req.body);
   var hours = {};
   hours[0] = {
     "open": timeToDb(req.body['0open']),

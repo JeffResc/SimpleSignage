@@ -6,5 +6,4 @@ RUN cd /usr/src/app && npm install
 COPY util/X.service /etc/systemd/system/X.service
 ENV INITSYSTEM on
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
-CMD ["export", "APP_DEVICES=test"]
 CMD ["node", "/usr/src/app/app.js"]
