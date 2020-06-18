@@ -19,13 +19,14 @@ const axios = require('axios');
 const fileUpload = require('express-fileupload');
 const crypto = require('crypto');
 const qs = require('querystring');
+const dns = require('dns');
 
 const app = express();
 const adapter = new FileSync('/data/db.json');
 const db = low(adapter);
 
 const login_username = process.env.APP_LOGIN_USERNAME || 'admin';
-const login_password = process.env.APP_LOGIN_PASSWORD_HASH || 'oKBT2uSiERMmBCGDNlmNGnYKpv7zVQvL3hs3td5aeIk=';  // Defaults to  'signage', use passwordHasher.js to create your own
+const login_password = process.env.APP_LOGIN_PASSWORD_HASH || 'oKBT2uSiERMmBCGDNlmNGnYKpv7zVQvL3hs3td5aeIk='; // Defaults to  'signage', use passwordHasher.js to create your own
 
 currentTask = 0;
 
@@ -127,12 +128,12 @@ function turnTVOn() {
 }
 
 function cancelAllJobs() {
-	i = 1;
-	while (typeof schedule.scheduledJobs['<Anonymous Job '+i+'>'] !== 'undefined') {
-		schedule.scheduledJobs['<Anonymous Job '+i+'>'].cancel();
-	  i++;
-	}
-	console.log('All scheduled jobs have been canceled.');
+  i = 1;
+  while (typeof schedule.scheduledJobs['<Anonymous Job ' + i + '>'] !== 'undefined') {
+    schedule.scheduledJobs['<Anonymous Job ' + i + '>'].cancel();
+    i++;
+  }
+  console.log('All scheduled jobs have been canceled.');
 }
 
 function queueJobs() {
@@ -143,23 +144,39 @@ function queueJobs() {
     var closeHour = hours.__wrapped__.hours[0][i].close.split(':')[0];
     var closeMin = hours.__wrapped__.hours[0][i].close.split(':')[1];
     // Turn TV On - 1 Hour Before Open
-    schedule.scheduleJob({hour: (parseInt(openHour) - 1), minute: openMin, dayOfWeek: hours.__wrapped__.hours[0][i]}, function() {
+    schedule.scheduleJob({
+      hour: (parseInt(openHour) - 1),
+      minute: openMin,
+      dayOfWeek: hours.__wrapped__.hours[0][i]
+    }, function() {
       turnTVOn();
       killOMXPlayer();
       showScreenSaver();
     });
     // Turn TV Off - 1 Hour After Close
-    schedule.scheduleJob({hour: (parseInt(closeHour) + 1), minute: closeMin, dayOfWeek: hours.__wrapped__.hours[0][i]}, function() {
+    schedule.scheduleJob({
+      hour: (parseInt(closeHour) + 1),
+      minute: closeMin,
+      dayOfWeek: hours.__wrapped__.hours[0][i]
+    }, function() {
       turnTVOff();
       killOMXPlayer();
     });
     // Show Menu - At open
-    schedule.scheduleJob({hour: openHour, minute: openMin, dayOfWeek: hours.__wrapped__.hours[0][i]}, function() {
+    schedule.scheduleJob({
+      hour: openHour,
+      minute: openMin,
+      dayOfWeek: hours.__wrapped__.hours[0][i]
+    }, function() {
       killOMXPlayer();
       showContent();
     });
     // Show screen saver - At close
-    schedule.scheduleJob({hour: closeHour, minute: closeMin, dayOfWeek: hours.__wrapped__.hours[0][i]}, function() {
+    schedule.scheduleJob({
+      hour: closeHour,
+      minute: closeMin,
+      dayOfWeek: hours.__wrapped__.hours[0][i]
+    }, function() {
       killOMXPlayer();
       showScreenSaver();
     });
@@ -169,19 +186,24 @@ queueJobs();
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(fileUpload());
 app.use('/assets', express.static(__dirname + '/public'));
 app.use('/pages', express.static(__dirname + '/views'));
 
 function myAuthorizer(username, password) {
-    const userMatches = basicAuth.safeCompare(username, login_username);
-    const passwordMatches = basicAuth.safeCompare(crypto.createHash('sha256').update(password).digest('base64'), login_password);
-    const hashPasswordMatches = basicAuth.safeCompare(password, login_password);
+  const userMatches = basicAuth.safeCompare(username, login_username);
+  const passwordMatches = basicAuth.safeCompare(crypto.createHash('sha256').update(password).digest('base64'), login_password);
+  const hashPasswordMatches = basicAuth.safeCompare(password, login_password);
 
-    return (userMatches & passwordMatches) || (userMatches & hashPasswordMatches);
+  return (userMatches & passwordMatches) || (userMatches & hashPasswordMatches);
 }
-app.use(basicAuth( { authorizer: myAuthorizer, challenge: true } ))
+app.use(basicAuth({
+  authorizer: myAuthorizer,
+  challenge: true
+}))
 
 app.post('/forms/dashboardActions', function(req, res) {
   if (req.body.startContent == '') {
@@ -206,12 +228,12 @@ app.post('/forms/dashboardActions', function(req, res) {
   } else if (req.body.reboot == '') {
     setTimeout(function() {
       axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/reboot?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
-      .then((res) => {
-        console.log('Restarting...');
-      })
-      .catch((error) => {
-        console.error('Balena Reboot API Error: ' + error);
-      })
+        .then((res) => {
+          console.log('Restarting...');
+        })
+        .catch((error) => {
+          console.error('Balena Reboot API Error: ' + error);
+        })
     }, 3000);
     res.redirect('/?message=Processing...');
   }
@@ -270,8 +292,8 @@ app.post('/forms/postHours', function(req, res) {
     var requestBody = req.body;
     delete requestBody.sync;
     var devices = [];
-    const devicesText =  process.env.APP_DEVICES;
-    if (typeof devicesText !== 'undefined')  {
+    const devicesText = process.env.APP_DEVICES;
+    if (typeof devicesText !== 'undefined') {
       if (devicesText.indexOf(',') > -1) {
         devices = devicesText.split(',');
       } else {
@@ -283,30 +305,30 @@ app.post('/forms/postHours', function(req, res) {
       devices.splice(index, 1);
     }
     console.log(devices);
-    var messsage;
-    devices.forEach(uuid =>  {
+    //var messsage;
+    devices.forEach(uuid => {
       axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', qs.stringify(requestBody), {
-        auth: {
-          username: login_username,
-          password: login_password
-        },
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-      .then((res) => {
-        if (typeof res.statusCode  !==  'undefined')  {
-          console.error('Error syncing hours with ' + uuid.substring(0, 7) + ': ' + res.statusCode);
-          message += 'Error syncing hours with ' + uuid.substring(0, 7) + ': ' + res.statusCode  + '\n';
-        } else {
-          console.log('Successfully synced hours with ' + uuid.substring(0, 7));
-          message += 'Successfully synced hours with ' + uuid.substring(0, 7);
-        }
-      })
-      .catch((error) => {
-        console.error('Error syncing hours with ' + uuid.substring(0, 7) + ': ' + error);
-        message += 'Error syncing hours with ' + uuid.substring(0, 7) + ': ' + error + '\n';
-      });
+          auth: {
+            username: login_username,
+            password: login_password
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+        .then((res) => {
+          if (typeof res.statusCode !== 'undefined') {
+            console.error('Error syncing hours with ' + uuid.substring(0, 7) + ': ' + res.statusCode);
+            //message += 'Error syncing hours with ' + uuid.substring(0, 7) + ': ' + res.statusCode + '\n';
+          } else {
+            console.log('Successfully synced hours with ' + uuid.substring(0, 7));
+            //message += 'Successfully synced hours with ' + uuid.substring(0, 7);
+          }
+        })
+        .catch((error) => {
+          console.error('Error syncing hours with ' + uuid.substring(0, 7) + ': ' + error);
+          //message += 'Error syncing hours with ' + uuid.substring(0, 7) + ': ' + error + '\n';
+        });
     });
     console.log('Done syncing...');
     /*if (typeof message !== 'undefined' && message) {
@@ -320,7 +342,7 @@ app.post('/forms/postHours', function(req, res) {
 
 app.post('/upload/content', function(req, res) {
   let contentFile = req.files.contentFile;
-	if (currentTask == 1) {
+  if (currentTask == 1) {
     killOMXPlayer();
   }
   if (fs.existsSync('/data/contentFile.mp4')) {
@@ -328,12 +350,12 @@ app.post('/upload/content', function(req, res) {
   }
   contentFile.mv('/data/contentFile.mp4', function(err) {
     if (err) {
-			return res.redirect('/?message=' + encodeURI('Error uploading new content: ' + err));
-		}
+      return res.redirect('/?message=' + encodeURI('Error uploading new content: ' + err));
+    }
     if (currentTask == 1) {
       showContent();
     }
-		res.redirect('/?message=' + encodeURI('Content successfully uploaded!'));
+    res.redirect('/?message=' + encodeURI('Content successfully uploaded!'));
   });
 });
 
@@ -347,12 +369,12 @@ app.post('/upload/screensaver', function(req, res) {
   }
   screensaverFile.mv('/data/screensaverFile.mp4', function(err) {
     if (err) {
-			return res.redirect('/?message=' + encodeURI('Error uploading new screensaver: ' + err));
-		}
+      return res.redirect('/?message=' + encodeURI('Error uploading new screensaver: ' + err));
+    }
     if (currentTask == 2) {
       showScreenSaver();
     }
-		res.redirect('/?message=' + encodeURI('Screensaver successfully uploaded!'));
+    res.redirect('/?message=' + encodeURI('Screensaver successfully uploaded!'));
   });
 });
 
@@ -404,6 +426,27 @@ app.get('/view.png', function(req, res) {
     }
   });
 });
+
+var internetConnection = true;
+setInterval(function() {
+  dns.resolve('www.google.com', function(err) {
+    if (err) {
+      if (internetConnection) {
+        internetConnection = !internetConnection;
+        exec('/usr/src/app/pngview -b 0 -d 0 -l 3 -n -x 25 -y 25 /usr/src/app/mediaAssets/noWiFi.png', (error, stdout, stderr) => {
+          if (error) {
+            console.error('Unable to enable no wifi overlay: ' + error);
+          }
+        });
+      }
+    } else {
+      if (!internetConnection) {
+        internetConnection = !internetConnection;
+        exec('killall pngview', (err, stdout, stderr) => {});
+      }
+    }
+  });
+}, 60 * 1000);
 
 app.get('/', function(req, res) {
   const dbHours = db.get('hours');
