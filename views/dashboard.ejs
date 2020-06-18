@@ -135,7 +135,57 @@
               </div>
             </div>
             <div class="col-md-6">
+							<div class="card">
+                <div class="card-header">Content Health</div>
+                <div class="card-body">
+                  <p class="card-title">Determine the health of your current content.</p>
+									<div class="table-responsive">
+                    <table class="table table-striped">
+                      <tbody>
+                        <tr>
+                          <th scope="row">Content</th>
+                          <td>Valid: <i class="fas fa-<%= contentValid ? 'check' : 'times' %>"></i></td>
+													<td><button onclick="location.href='/download/content';" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-download"></i> Download</button></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Screensaver</th>
+                          <td>Valid: <i class="fas fa-<%= screenSaverValid ? 'check' : 'times' %>"></i></td>
+													<td><button onclick="location.href='/download/screensaver';" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-download"></i> Download</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
               <div class="card">
+                <div class="card-header">Content Uploader</div>
+                <div class="card-body">
+                  <p class="card-title">
+                    Upload a new content file or screensaver.
+                  </p>
+                  <div>
+                    <table class="table table-striped">
+                      <tbody>
+                        <tr>
+                          <th scope="row">Select video to upload as content:</th>
+                          <td>
+                            <form action="/upload/content" method="post" enctype="multipart/form-data"><input type="file" name="contentFile" id="contentFile" accept="video/mp4"><input type="submit" value="Upload Content" name="submit"></form>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Select video to upload as screensaver:</th>
+                          <td>
+                            <form action="/upload/screensaver" method="post" enctype="multipart/form-data">
+															<input type="file" name="screensaverFile" id="screensaverFile" accept="video/mp4"><input type="submit" value="Upload Screensaver" name="submit">
+														</form>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+							<div class="card">
                 <div class="card-header">Set Screen Hours</div>
                 <div class="card-body">
                   <p class="card-title">Screens will turn on one hour prior to open as well as stay on one hour after close to display your splashscreen/screensaver.</p>
@@ -199,56 +249,6 @@
                         </svg><!-- <i class="fas fa-save"></i> --> Save</button>
                     </div>
                   </form>
-                </div>
-              </div>
-							<div class="card">
-                <div class="card-header">Content Health</div>
-                <div class="card-body">
-                  <p class="card-title">Determine the health of your current content.</p>
-									<div class="table-responsive">
-                    <table class="table table-striped">
-                      <tbody>
-                        <tr>
-                          <th scope="row">Content</th>
-                          <td>Valid: <i class="fas fa-<%= contentValid ? 'check' : 'times' %>"></i></td>
-													<td><button onclick="location.href='/download/content';" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-download"></i> Download</button></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Screensaver</th>
-                          <td>Valid: <i class="fas fa-<%= screenSaverValid ? 'check' : 'times' %>"></i></td>
-													<td><button onclick="location.href='/download/screensaver';" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-download"></i> Download</button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">Content Uploader</div>
-                <div class="card-body">
-                  <p class="card-title">
-                    Upload a new content file or screensaver.
-                  </p>
-                  <div>
-                    <table class="table table-striped">
-                      <tbody>
-                        <tr>
-                          <th scope="row">Select video to upload as content:</th>
-                          <td>
-                            <form action="/upload/content" method="post" enctype="multipart/form-data"><input type="file" name="contentFile" id="contentFile" accept="video/mp4"><input type="submit" value="Upload Content" name="submit"></form>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Select video to upload as screensaver:</th>
-                          <td>
-                            <form action="/upload/screensaver" method="post" enctype="multipart/form-data">
-															<input type="file" name="screensaverFile" id="screensaverFile" accept="video/mp4"><input type="submit" value="Upload Screensaver" name="submit">
-														</form>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
                 </div>
               </div>
             </div>
