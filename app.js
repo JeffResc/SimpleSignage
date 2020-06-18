@@ -18,6 +18,7 @@ const fs = require('fs');
 const axios = require('axios');
 const fileUpload = require('express-fileupload');
 const crypto = require('crypto');
+const qs = require('querystring');
 
 const app = express();
 const adapter = new FileSync('/data/db.json');
@@ -262,8 +263,8 @@ app.post('/forms/postHours', function(req, res) {
   queueJobs();
   if (typeof req.body['sync'] !== 'undefined' && req.body['sync'] == 'on') {
     console.log('Syncing hours...');
-    var newBody = req.body;
-    delete newBody.sync;
+    var requestBody = req.body;
+    delete requestBody.sync;
     var devices = [];
     const devicesText =  process.env.APP_DEVICES;
     if (typeof devicesText !== 'undefined')  {
@@ -279,10 +280,13 @@ app.post('/forms/postHours', function(req, res) {
     }
     console.log(devices);
     devices.forEach(uuid =>  {
-      axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', newBody, {
+      axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', qs.stringify(requestBody), {
         auth: {
           username: login_username,
           password: login_password
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       })
       .then((res) => {
