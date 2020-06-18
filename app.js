@@ -328,12 +328,12 @@ app.post('/upload/content', function(req, res) {
   }
   contentFile.mv('/data/contentFile.mp4', function(err) {
     if (err) {
-			return res.redirect('/?message=' encodeURI('Error uploading new content: ' + err));
+			return res.redirect('/?message=' + encodeURI('Error uploading new content: ' + err));
 		}
     if (currentTask == 1) {
       showContent();
     }
-		res.redirect('/?message=' encodeURI('Content successfully uploaded!'));
+		res.redirect('/?message=' + encodeURI('Content successfully uploaded!'));
   });
 });
 
@@ -347,12 +347,12 @@ app.post('/upload/screensaver', function(req, res) {
   }
   screensaverFile.mv('/data/screensaverFile.mp4', function(err) {
     if (err) {
-			return res.redirect('/?message=' encodeURI('Error uploading new screensaver: ' + err));
+			return res.redirect('/?message=' + encodeURI('Error uploading new screensaver: ' + err));
 		}
     if (currentTask == 2) {
       showScreenSaver();
     }
-		res.redirect('/?message=' encodeURI('Screensaver successfully uploaded!'));
+		res.redirect('/?message=' + encodeURI('Screensaver successfully uploaded!'));
   });
 });
 
