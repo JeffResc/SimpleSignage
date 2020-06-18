@@ -67,7 +67,34 @@
           <% } %>
           <div class="row">
             <div class="col-md-6">
+							<div class="card">
+                <div class="card-header">Actions</div>
+                <div class="card-body">
+                  <p class="card-title">Use these buttons to control the device in realtime.</p>
+                  <form method="POST" action="/forms/dashboardActions">
+                    <button type="submit" name="stop" class="btn btn-icon icon-left btn-danger mb-2"><i class="fas fa-stop"></i> Stop Playing</button>
+                    <button type="submit" name="start" class="btn btn-icon icon-left btn-success mb-2"><i class="fas fa-play"></i> Start</button>
+                    <button type="submit" name="startContent" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-play"></i> Start Content</button>
+                    <button type="submit" name="startScreensaver" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-play"></i> Start Screensaver</button>
+                    <br>
+                    <button type="submit" name="tvOff" class="btn btn-icon icon-left btn-danger mb-2"><i class="fas fa-power-off"></i> TV Off</button>
+                    <button type="submit" name="tvOn" class="btn btn-icon icon-left btn-success mb-2"><i class="fas fa-power-off"></i> TV On</button>
+                    <button type="submit" name="reboot" class="btn btn-icon icon-left btn-warning mb-2"><i class="fas fa-circle-notch"></i> Reboot Device</button>
+                  </form>
+                </div>
+              </div>
               <div class="card">
+                <div class="card-header">Live View</div>
+                <div class="card-body">
+                  <p class="card-title">
+                    View the screen in close to realtime.
+                  </p>
+                  <div id="liveView">
+                    <img src="/view.png" width="100%" height="100%" />
+                  </div>
+                </div>
+              </div>
+							<div class="card">
                 <div class="card-header">Device Information</div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -103,33 +130,6 @@
                         </tr>
                       </tbody>
                     </table>
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">Actions</div>
-                <div class="card-body">
-                  <p class="card-title">Use these buttons to control the device in realtime.</p>
-                  <form method="POST" action="/forms/dashboardActions">
-                    <button type="submit" name="stop" class="btn btn-icon icon-left btn-danger mb-2"><i class="fas fa-stop"></i> Stop Playing</button>
-                    <button type="submit" name="start" class="btn btn-icon icon-left btn-success mb-2"><i class="fas fa-play"></i> Start</button>
-                    <button type="submit" name="startContent" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-play"></i> Start Content</button>
-                    <button type="submit" name="startScreensaver" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-play"></i> Start Screensaver</button>
-                    <br>
-                    <button type="submit" name="tvOff" class="btn btn-icon icon-left btn-danger mb-2"><i class="fas fa-power-off"></i> TV Off</button>
-                    <button type="submit" name="tvOn" class="btn btn-icon icon-left btn-success mb-2"><i class="fas fa-power-off"></i> TV On</button>
-                    <button type="submit" name="reboot" class="btn btn-icon icon-left btn-warning mb-2"><i class="fas fa-circle-notch"></i> Reboot Device</button>
-                  </form>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">Live View</div>
-                <div class="card-body">
-                  <p class="card-title">
-                    View the screen in close to realtime.
-                  </p>
-                  <div id="liveView">
-                    <img src="/view.png" width="100%" height="100%" />
                   </div>
                 </div>
               </div>
