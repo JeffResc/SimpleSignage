@@ -90,7 +90,7 @@ function showContent() {
   if (fs.existsSync('/data/contentFile.mp4')) {
     exec('omxplayer --loop --no-osd /data/contentFile.mp4', (err, stdout, stderr) => {});
   } else {
-    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMediaFound.mp4', (err, stdout, stderr) => {});
+    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {});
   }
 }
 
@@ -99,7 +99,7 @@ function showScreenSaver() {
   if (fs.existsSync('/data/screensaverFile.mp4')) {
     exec('omxplayer --loop --no-osd /data/screensaverFile.mp4', (err, stdout, stderr) => {});
   } else {
-    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMediaFound.mp4', (err, stdout, stderr) => {});
+    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {});
   }
 }
 
@@ -377,7 +377,7 @@ app.get('/download/content', function(req, res) {
   if (fs.existsSync('/data/contentFile.mp4')) {
     res.download('/data/contentFile.mp4');
   } else {
-    res.download('/usr/src/app/mediaAssets/NoMediaFound.mp4');
+    res.download('/usr/src/app/mediaAssets/NoMedia.mp4');
   }
 });
 
@@ -385,7 +385,7 @@ app.get('/download/screensaver', function(req, res) {
   if (fs.existsSync('/data/screensaverFile.mp4')) {
     res.download('/data/screensaverFile.mp4');
   } else {
-    res.download('/usr/src/app/mediaAssets/NoMediaFound.mp4');
+    res.download('/usr/src/app/mediaAssets/NoMedia.mp4');
   }
 });
 
