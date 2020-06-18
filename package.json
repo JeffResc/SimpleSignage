@@ -19,7 +19,7 @@
     "url": "git+https://github.com/JeffResc/SimpleSignage.git"
   },
   "author": "Jeffrey Rescignano",
-  "license": "LicenseRef-LICENSE",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/JeffResc/SimpleSignage/issues"
   },

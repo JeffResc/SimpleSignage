@@ -262,6 +262,9 @@ app.post('/forms/postHours', function(req, res) {
     console.log('Syncing hours...');
     var newBody = req.body;
     delete newBody.sync;
+    newBody.auth = {};
+    newBody.auth.username = login_username;
+    newBody.auth.password = login_password;
     var devices = [];
     const devicesText =  process.env.APP_DEVICES;
     if (typeof devicesText !== 'undefined')  {
