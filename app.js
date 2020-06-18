@@ -279,6 +279,7 @@ app.post('/forms/postHours', function(req, res) {
       devices.splice(index, 1);
     }
     console.log(devices);
+    var messsage;
     devices.forEach(uuid =>  {
       axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', qs.stringify(requestBody), {
         auth: {
@@ -290,15 +291,27 @@ app.post('/forms/postHours', function(req, res) {
         }
       })
       .then((res) => {
-        console.log('Synced hours with ' + uuid + ', code: ' + res.statusCode);
+        if (typeof res.statusCode  !==  'undefined')  {
+          console.error('Error syncing hours with ' + uuid + ': ' + res.statusCode);
+          message += 'Error syncing hours with ' + uuid + ': ' + res.statusCode  + '\n';
+        } else {
+          console.log('Successfully synced hours with ' + uuid);
+        }
       })
       .catch((error) => {
         console.error('Error syncing hours with ' + uuid + ': ' + error);
+        message += 'Error syncing hours with ' + uuid + ': ' + error + '\n';
       });
     });
+    console.log('Done syncing...');
+    if (typeof message !== 'undefined') {
+      res.redirect('/?message=' + encodeURI(message));
+    } else {
+      res.redirect('/');
+    }
+  } else {
+    res.redirect('/');
   }
-  console.log('Done syncing...');
-  res.redirect('/');
 });
 
 app.post('/upload/content', function(req, res) {
@@ -364,7 +377,11 @@ app.get('/', function(req, res) {
   const deviceType = process.env.BALENA_DEVICE_TYPE || 'Unknown';
   const balenaSupervisorVersion = process.env.BALENA_SUPERVISOR_VERSION || 'Unknown';
   const hostOSVersion = process.env.BALENA_HOST_OS_VERSION || 'Unknown';
-  const processing = req.query.processing || 0;
+  if (typeof req.query.processing !== 'undefined' && req.query.processing == 1) {
+    const message = 'Processing your request...';
+  } else {
+    const message = req.query.message;
+  }
   var bussHours = {};
   for (i = 0; i <= 6; i++) {
     var openHour = dbHours.__wrapped__.hours[0][i].open.split(':')[0];
@@ -398,7 +415,7 @@ app.get('/', function(req, res) {
     balenaSupervisorVersion: balenaSupervisorVersion,
     hostOSVersion: hostOSVersion,
     hours: bussHours,
-    processing: processing
+    message: message
   });
 });
 app.use(function(req, res, next) {
