@@ -262,9 +262,6 @@ app.post('/forms/postHours', function(req, res) {
     console.log('Syncing hours...');
     var newBody = req.body;
     delete newBody.sync;
-    newBody.auth = {};
-    newBody.auth.username = login_username;
-    newBody.auth.password = login_password;
     var devices = [];
     const devicesText =  process.env.APP_DEVICES;
     if (typeof devicesText !== 'undefined')  {
@@ -279,6 +276,10 @@ app.post('/forms/postHours', function(req, res) {
       devices.splice(index, 1);
     }
     console.log(devices);
+    const token = Buffer.from(`${login_username}:${login_password}`, 'utf8').toString('base64');
+    newBody.headers = {
+      'Authorization': `Basic ${token}`
+    };
     devices.forEach(uuid =>  {
       axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', newBody)
       .then((res) => {
