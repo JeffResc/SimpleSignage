@@ -280,6 +280,7 @@ app.post('/forms/postHours', function(req, res) {
     newBody.headers = {
       'Authorization': `Basic ${token}`
     };
+    console.log(newBody);
     devices.forEach(uuid =>  {
       axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', newBody)
       .then((res) => {
