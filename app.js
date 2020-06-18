@@ -296,6 +296,7 @@ app.post('/forms/postHours', function(req, res) {
           message += 'Error syncing hours with ' + uuid + ': ' + res.statusCode  + '\n';
         } else {
           console.log('Successfully synced hours with ' + uuid);
+          message += 'Successfully synced hours with ' + uuid;
         }
       })
       .catch((error) => {
@@ -380,7 +381,7 @@ app.get('/', function(req, res) {
   if (typeof req.query.processing !== 'undefined' && req.query.processing == 1) {
     const message = 'Processing your request...';
   } else {
-    const message = req.query.message  || 'undefined';
+    const message = req.query.message;
   }
   var bussHours = {};
   for (i = 0; i <= 6; i++) {
@@ -406,7 +407,7 @@ app.get('/', function(req, res) {
       bussHours[i].close = closeHour + ':' + closeMin + ' AM';
     }
   }
-  res.render('dashboard', {
+  var query = {
     username: req.auth.user,
     uuid: uuid,
     appId: appId,
@@ -414,9 +415,12 @@ app.get('/', function(req, res) {
     deviceType: deviceType,
     balenaSupervisorVersion: balenaSupervisorVersion,
     hostOSVersion: hostOSVersion,
-    hours: bussHours,
-    message: message
-  });
+    hours: bussHours
+  }
+  if (typeof message !== 'undefined' && message) {
+    query.message = message;
+  }
+  res.render('dashboard', query);
 });
 app.use(function(req, res, next) {
   res.status(404).render('404');
