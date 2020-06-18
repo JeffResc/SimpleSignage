@@ -385,28 +385,28 @@ app.get('/', function(req, res) {
   const contentValid = fs.existsSync("/data/contentFile.mp4")
   const screenSaverValid = fs.existsSync("/data/screensaverFile.mp4");
 
-  var bussHours = {};
+  var hours = {};
   for (i = 0; i <= 6; i++) {
     var openHour = dbHours.__wrapped__.hours[0][i].open.split(':')[0];
     const openMin = dbHours.__wrapped__.hours[0][i].open.split(':')[1];
     var closeHour = dbHours.__wrapped__.hours[0][i].close.split(':')[0];
     const closeMin = dbHours.__wrapped__.hours[0][i].close.split(':')[1];
-    bussHours[i] = {};
+    hours[i] = {};
     if (openHour >= 12) {
       if (openHour != 12) {
         openHour = parseInt(openHour) - 12;
       }
-      bussHours[i].open = openHour + ':' + openMin + ' PM';
+      hours[i].open = openHour + ':' + openMin + ' PM';
     } else {
-      bussHours[i].open = openHour + ':' + openMin + ' AM';
+      hours[i].open = openHour + ':' + openMin + ' AM';
     }
     if (closeHour >= 12) {
       if (closeHour != 12) {
         closeHour = parseInt(closeHour) - 12;
       }
-      bussHours[i].close = closeHour + ':' + closeMin + ' PM';
+      hours[i].close = closeHour + ':' + closeMin + ' PM';
     } else {
-      bussHours[i].close = closeHour + ':' + closeMin + ' AM';
+      hours[i].close = closeHour + ':' + closeMin + ' AM';
     }
   }
   var resVars = {
@@ -417,7 +417,7 @@ app.get('/', function(req, res) {
     deviceType: deviceType,
     balenaSupervisorVersion: balenaSupervisorVersion,
     hostOSVersion: hostOSVersion,
-    hours: bussHours,
+    hours: hours,
     contentValid: contentValid,
     screenSaverValid: screenSaverValid
   }
