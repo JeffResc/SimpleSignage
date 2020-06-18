@@ -373,6 +373,22 @@ app.get('/view.png', function(req, res) {
   });
 });
 
+app.get('/download/content', function(req, res) {
+  if (fs.existsSync("/data/contentFile.mp4")) {
+    res.download("/data/contentFile.mp4");
+  } else {
+    res.download("/usr/src/app/mediaAssets/NoMediaFound.mp4");
+  }
+});
+
+app.get('/download/screensaver', function(req, res) {
+  if (fs.existsSync("/data/screensaverFile.mp4")) {
+    res.download("/data/screensaverFile.mp4");
+  } else {
+    res.download("/usr/src/app/mediaAssets/NoMediaFound.mp4");
+  }
+});
+
 app.get('/', function(req, res) {
   const dbHours = db.get('hours');
   const uuid = process.env.BALENA_DEVICE_UUID || 'Unknown';

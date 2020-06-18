@@ -106,26 +106,6 @@
                   </div>
                 </div>
               </div>
-							<div class="card">
-                <div class="card-header">Content Health</div>
-                <div class="card-body">
-                  <p class="card-title">Determine the health of your current content.</p>
-									<div class="table-responsive">
-                    <table class="table table-striped">
-                      <tbody>
-                        <tr>
-                          <th scope="row">Content</th>
-                          <td>Valid: <i class="fas fa-<%= contentValid ? 'check' : 'times' %>"></i></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Screensaver</th>
-                          <td>Valid: <i class="fas fa-<%= screenSaverValid ? 'check' : 'times' %>"></i></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
               <div class="card">
                 <div class="card-header">Actions</div>
                 <div class="card-body">
@@ -219,6 +199,28 @@
                         </svg><!-- <i class="fas fa-save"></i> --> Save</button>
                     </div>
                   </form>
+                </div>
+              </div>
+							<div class="card">
+                <div class="card-header">Content Health</div>
+                <div class="card-body">
+                  <p class="card-title">Determine the health of your current content.</p>
+									<div class="table-responsive">
+                    <table class="table table-striped">
+                      <tbody>
+                        <tr>
+                          <th scope="row">Content</th>
+                          <td>Valid: <i class="fas fa-<%= contentValid ? 'check' : 'times' %>"></i></td>
+													<td><button onclick="location.href='/download/content';" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-download"></i> Download</button></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Screensaver</th>
+                          <td>Valid: <i class="fas fa-<%= screenSaverValid ? 'check' : 'times' %>"></i></td>
+													<td><button onclick="location.href='/download/screensaver';" class="btn btn-icon icon-left btn-info mb-2"><i class="fas fa-download"></i> Download</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
               <div class="card">
