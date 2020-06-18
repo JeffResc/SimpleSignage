@@ -224,8 +224,10 @@ app.post('/forms/dashboardActions', function(req, res) {
     res.redirect('/');
   } else if (req.body.tvOff == '') {
     turnTVOff();
+    res.redirect('/');
   } else if (req.body.tvOn == '') {
     turnTVOn();
+    res.redirect('/');
   } else if (req.body.reboot == '') {
     setTimeout(function() {
       axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/reboot?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
