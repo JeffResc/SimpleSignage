@@ -371,17 +371,18 @@ app.get('/view.png', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-  var dbHours = db.get('hours');
+  const dbHours = db.get('hours');
   const uuid = process.env.BALENA_DEVICE_UUID || 'Unknown';
   const appId = process.env.BALENA_APP_ID || 'Unknown';
   const appName = process.env.BALENA_APP_NAME || 'Unknown';
   const deviceType = process.env.BALENA_DEVICE_TYPE || 'Unknown';
   const balenaSupervisorVersion = process.env.BALENA_SUPERVISOR_VERSION || 'Unknown';
   const hostOSVersion = process.env.BALENA_HOST_OS_VERSION || 'Unknown';
+  var message;
   if (typeof req.query.processing !== 'undefined' && req.query.processing == 1) {
-    const message = 'Processing your request...';
+    message = 'Processing your request...';
   } else {
-    const message = req.query.message;
+    message = req.query.message;
   }
   var bussHours = {};
   for (i = 0; i <= 6; i++) {
@@ -407,7 +408,7 @@ app.get('/', function(req, res) {
       bussHours[i].close = closeHour + ':' + closeMin + ' AM';
     }
   }
-  var query = {
+  var resVars = {
     username: req.auth.user,
     uuid: uuid,
     appId: appId,
@@ -418,9 +419,10 @@ app.get('/', function(req, res) {
     hours: bussHours
   }
   if (typeof message !== 'undefined' && message) {
-    query.message = message;
+    resVars.message = message;
   }
-  res.render('dashboard', query);
+  console.log(resVars);
+  res.render('dashboard', resVars);
 });
 app.use(function(req, res, next) {
   res.status(404).render('404');
