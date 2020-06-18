@@ -183,7 +183,6 @@ function queueJobs() {
   }
   console.log('Jobs have been scheduled.');
 }
-queueJobs();
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -455,7 +454,6 @@ function checkInternet() {
 setInterval(function() {
   checkInternet();
 }, 60 * 1000);
-checkInternet();
 
 app.get('/', function(req, res) {
   const dbHours = db.get('hours');
@@ -515,5 +513,8 @@ app.get('/', function(req, res) {
 app.use(function(req, res, next) {
   res.status(404).render('404');
 });
+
 app.listen(80);
 activateDisplay();
+queueJobs();
+checkInternet();
