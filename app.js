@@ -209,24 +209,24 @@ app.post('/forms/dashboardActions', function(req, res) {
   if (req.body.startContent == '') {
     killOMXPlayer();
     showContent();
-    res.redirect('/');
+    res.redirect('/?message=' + encodeURI('Content started.'));
   } else if (req.body.startScreensaver == '') {
     killOMXPlayer()
     showScreenSaver();
-    res.redirect('/');
+    res.redirect('/?message=' + encodeURI('Screensaver started.'));
   } else if (req.body.start == '') {
     killOMXPlayer()
     activateDisplay();
-    res.redirect('/');
+    res.redirect('/?message=' + encodeURI('Media started.'));
   } else if (req.body.stop == '') {
     killOMXPlayer();
-    res.redirect('/');
+    res.redirect('/?message=' + encodeURI('Media stopped.'));
   } else if (req.body.tvOff == '') {
     turnTVOff();
-    res.redirect('/');
+    res.redirect('/?message=' + encodeURI('TV turned off.'));
   } else if (req.body.tvOn == '') {
     turnTVOn();
-    res.redirect('/');
+    res.redirect('/?message=' + encodeURI('TV turned on.'));
   } else if (req.body.reboot == '') {
     setTimeout(function() {
       axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/reboot?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
@@ -237,7 +237,7 @@ app.post('/forms/dashboardActions', function(req, res) {
           console.error('Balena Reboot API Error: ' + error);
         })
     }, 3000);
-    res.redirect('/?message=Processing...');
+    res.redirect('/?message=' + encodeURI('Shutting down...'));
   }
 });
 
