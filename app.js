@@ -30,34 +30,34 @@ const login_password = process.env.APP_LOGIN_PASSWORD_HASH || 'oKBT2uSiERMmBCGDN
 currentTask = 0;
 
 db.defaults({
-  "hours": [{
-    "0": {
-      "open": "10:30",
-      "close": "20:30"
+  'hours': [{
+    '0': {
+      'open': '10:30',
+      'close': '20:30'
     },
-    "1": {
-      "open": "10:30",
-      "close": "20:30"
+    '1': {
+      'open': '10:30',
+      'close': '20:30'
     },
-    "2": {
-      "open": "10:30",
-      "close": "20:30"
+    '2': {
+      'open': '10:30',
+      'close': '20:30'
     },
-    "3": {
-      "open": "10:30",
-      "close": "20:30"
+    '3': {
+      'open': '10:30',
+      'close': '20:30'
     },
-    "4": {
-      "open": "10:30",
-      "close": "20:30"
+    '4': {
+      'open': '10:30',
+      'close': '20:30'
     },
-    "5": {
-      "open": "10:30",
-      "close": "20:30"
+    '5': {
+      'open': '10:30',
+      'close': '20:30'
     },
-    "6": {
-      "open": "10:30",
-      "close": "20:30"
+    '6': {
+      'open': '10:30',
+      'close': '20:30'
     }
   }]
 }).write()
@@ -81,13 +81,13 @@ function activateDisplay() {
     // In business hours, play content
     showContent();
   } else {
-    console.log("Outside active hours, doing nothing...");
+    console.log('Outside active hours, doing nothing...');
   }
 }
 
 function showContent() {
   currentTask = 1;
-  if (fs.existsSync("/data/contentFile.mp4")) {
+  if (fs.existsSync('/data/contentFile.mp4')) {
     exec('omxplayer --loop --no-osd /data/contentFile.mp4', (err, stdout, stderr) => {});
   } else {
     exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMediaFound.mp4', (err, stdout, stderr) => {});
@@ -96,7 +96,7 @@ function showContent() {
 
 function showScreenSaver() {
   currentTask = 2;
-  if (fs.existsSync("/data/screensaverFile.mp4")) {
+  if (fs.existsSync('/data/screensaverFile.mp4')) {
     exec('omxplayer --loop --no-osd /data/screensaverFile.mp4', (err, stdout, stderr) => {});
   } else {
     exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMediaFound.mp4', (err, stdout, stderr) => {});
@@ -104,7 +104,7 @@ function showScreenSaver() {
 }
 
 function killOMXPlayer() {
-  console.log("OMXPlayer has been killed.");
+  console.log('OMXPlayer has been killed.');
   exec('killall omxplayer.bin', (err, stdout, stderr) => {});
 }
 
@@ -176,7 +176,7 @@ app.use('/pages', express.static(__dirname + '/views'));
 
 function myAuthorizer(username, password) {
     const userMatches = basicAuth.safeCompare(username, login_username);
-    const passwordMatches = basicAuth.safeCompare(crypto.createHash("sha256").update(password).digest("base64"), login_password);
+    const passwordMatches = basicAuth.safeCompare(crypto.createHash('sha256').update(password).digest('base64'), login_password);
     const hashPasswordMatches = basicAuth.safeCompare(password, login_password);
 
     return (userMatches & passwordMatches) || (userMatches & hashPasswordMatches);
@@ -187,18 +187,18 @@ app.post('/forms/dashboardActions', function(req, res) {
   if (req.body.startContent == '') {
     killOMXPlayer();
     showContent();
-    res.redirect("/");
+    res.redirect('/');
   } else if (req.body.startScreensaver == '') {
     killOMXPlayer()
     showScreenSaver();
-    res.redirect("/");
+    res.redirect('/');
   } else if (req.body.start == '') {
     killOMXPlayer()
     activateDisplay();
-    res.redirect("/");
+    res.redirect('/');
   } else if (req.body.stop == '') {
     killOMXPlayer();
-    res.redirect("/");
+    res.redirect('/');
   } else if (req.body.tvOff == '') {
     turnTVOff();
   } else if (req.body.tvOn == '') {
@@ -213,7 +213,7 @@ app.post('/forms/dashboardActions', function(req, res) {
         console.error('Balena Reboot API Error: ' + error);
       })
     }, 3000);
-    res.redirect("/?message=Processing...");
+    res.redirect('/?message=Processing...');
   }
 });
 
@@ -234,32 +234,32 @@ app.post('/forms/postHours', function(req, res) {
   console.log(req.body);
   var hours = {};
   hours[0] = {
-    "open": timeToDb(req.body['0open']),
-    "close": timeToDb(req.body['0close'])
+    'open': timeToDb(req.body['0open']),
+    'close': timeToDb(req.body['0close'])
   };
   hours[1] = {
-    "open": timeToDb(req.body['1open']),
-    "close": timeToDb(req.body['1close'])
+    'open': timeToDb(req.body['1open']),
+    'close': timeToDb(req.body['1close'])
   };
   hours[2] = {
-    "open": timeToDb(req.body['2open']),
-    "close": timeToDb(req.body['2close'])
+    'open': timeToDb(req.body['2open']),
+    'close': timeToDb(req.body['2close'])
   };
   hours[3] = {
-    "open": timeToDb(req.body['3open']),
-    "close": timeToDb(req.body['3close'])
+    'open': timeToDb(req.body['3open']),
+    'close': timeToDb(req.body['3close'])
   };
   hours[4] = {
-    "open": timeToDb(req.body['4open']),
-    "close": timeToDb(req.body['4close'])
+    'open': timeToDb(req.body['4open']),
+    'close': timeToDb(req.body['4close'])
   };
   hours[5] = {
-    "open": timeToDb(req.body['5open']),
-    "close": timeToDb(req.body['5close'])
+    'open': timeToDb(req.body['5open']),
+    'close': timeToDb(req.body['5close'])
   };
   hours[6] = {
-    "open": timeToDb(req.body['6open']),
-    "close": timeToDb(req.body['6close'])
+    'open': timeToDb(req.body['6open']),
+    'close': timeToDb(req.body['6close'])
   };
   db.get('hours').remove().write();
   db.get('hours').push(hours).write();
@@ -323,7 +323,7 @@ app.post('/upload/content', function(req, res) {
 	if (currentTask == 1) {
     killOMXPlayer();
   }
-  if (fs.existsSync("/data/contentFile.mp4")) {
+  if (fs.existsSync('/data/contentFile.mp4')) {
     fs.unlinkSync('/data/contentFile.mp4');
   }
   contentFile.mv('/data/contentFile.mp4', function(err) {
@@ -342,7 +342,7 @@ app.post('/upload/screensaver', function(req, res) {
   if (currentTask == 2) {
     killOMXPlayer();
   }
-  if (fs.existsSync("/data/screensaverFile.mp4")) {
+  if (fs.existsSync('/data/screensaverFile.mp4')) {
     fs.unlinkSync('/data/screensaverFile.mp4');
   }
   screensaverFile.mv('/data/screensaverFile.mp4', function(err) {
@@ -359,7 +359,7 @@ app.post('/upload/screensaver', function(req, res) {
 
 app.get('/view.png', function(req, res) {
   const rand = Math.floor(1000 + Math.random() * 9000);
-  exec("raspi2png --compression 9 --height 270 --width 480 --pngname /tmp/view_" + rand + ".png", (error, stdout, stderr) => {
+  exec('raspi2png --compression 9 --height 270 --width 480 --pngname /tmp/view_' + rand + '.png', (error, stdout, stderr) => {
     if (error) {
       res.status(500).send('Cannot execute raspi2png: ' + stderr);
     } else {
@@ -374,18 +374,18 @@ app.get('/view.png', function(req, res) {
 });
 
 app.get('/download/content', function(req, res) {
-  if (fs.existsSync("/data/contentFile.mp4")) {
-    res.download("/data/contentFile.mp4");
+  if (fs.existsSync('/data/contentFile.mp4')) {
+    res.download('/data/contentFile.mp4');
   } else {
-    res.download("/usr/src/app/mediaAssets/NoMediaFound.mp4");
+    res.download('/usr/src/app/mediaAssets/NoMediaFound.mp4');
   }
 });
 
 app.get('/download/screensaver', function(req, res) {
-  if (fs.existsSync("/data/screensaverFile.mp4")) {
-    res.download("/data/screensaverFile.mp4");
+  if (fs.existsSync('/data/screensaverFile.mp4')) {
+    res.download('/data/screensaverFile.mp4');
   } else {
-    res.download("/usr/src/app/mediaAssets/NoMediaFound.mp4");
+    res.download('/usr/src/app/mediaAssets/NoMediaFound.mp4');
   }
 });
 
@@ -399,8 +399,8 @@ app.get('/', function(req, res) {
   const balenaSupervisorVersion = process.env.BALENA_SUPERVISOR_VERSION || 'Unknown';
   const hostOSVersion = process.env.BALENA_HOST_OS_VERSION || 'Unknown';
   const message = req.query.message;
-  const contentValid = fs.existsSync("/data/contentFile.mp4")
-  const screenSaverValid = fs.existsSync("/data/screensaverFile.mp4");
+  const contentValid = fs.existsSync('/data/contentFile.mp4')
+  const screenSaverValid = fs.existsSync('/data/screensaverFile.mp4');
 
   var hours = {};
   for (i = 0; i <= 6; i++) {
