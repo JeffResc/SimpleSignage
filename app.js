@@ -84,6 +84,7 @@ function activateDisplay() {
   } else {
     console.log('Outside active hours, doing nothing...');
   }
+  queueJobs();
 }
 
 function showContent() {
@@ -93,6 +94,7 @@ function showContent() {
   } else {
     exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {});
   }
+  console.log("Content has been shown.");
 }
 
 function showScreenSaver() {
@@ -102,6 +104,7 @@ function showScreenSaver() {
   } else {
     exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {});
   }
+  console.log("Screensaver has been shown.");
 }
 
 function killOMXPlayer() {
@@ -112,8 +115,10 @@ function killOMXPlayer() {
 function turnTVOff() {
   exec('echo standby 0 | cec-client -s -d 1', (err, stdout, stderr) => {
     if (err) {
-      console.log('Unable to Turn TV off: ' + stderr);
+      console.error('Unable to Turn TV off: ' + stderr);
       return;
+    } else {
+      console.log("TV turned off.");
     }
   });
 }
@@ -121,8 +126,10 @@ function turnTVOff() {
 function turnTVOn() {
   exec('echo on 0 | cec-client -s -d 1', (err, stdout, stderr) => {
     if (err) {
-      console.log('Unable to Turn TV on: ' + stderr);
+      console.error('Unable to Turn TV on: ' + stderr);
       return;
+    } else {
+      console.log("TV turned on.");
     }
   });
 }
@@ -137,6 +144,7 @@ function cancelAllJobs() {
 }
 
 function queueJobs() {
+  cancelAllJobs();
   var hours = db.get('hours');
   for (i = 0; i <= 6; i++) {
     var openHour = hours.__wrapped__.hours[0][i].open.split(':')[0];
@@ -516,5 +524,4 @@ app.use(function(req, res, next) {
 
 app.listen(80);
 activateDisplay();
-queueJobs();
 checkInternet();
