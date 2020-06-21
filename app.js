@@ -190,6 +190,7 @@ function queueJobs() {
     });
   }
   console.log('Jobs have been scheduled.');
+  console.log(schedule.scheduledJobs);
 }
 
 app.set('views', __dirname + '/views');
