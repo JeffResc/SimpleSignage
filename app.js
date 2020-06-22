@@ -164,7 +164,13 @@ function queueJobs() {
       showContent();
     });
     // Show screen saver - At close
-    const d_obj = {minute: closeMin, hour: closeHour, dayOfWeek: i};
+    var newCloseHour2;
+    if (closeHour >= 24) {
+      newCloseHour2 = closeHour - 24;
+    } else {
+      newCloseHour2 = closeHour;
+    }
+    const d_obj = {minute: closeMin, hour: newCloseHour2, dayOfWeek: i};
     const d_job = schedule.scheduleJob(d_obj, function() {
       killOMXPlayer();
       showScreenSaver();
