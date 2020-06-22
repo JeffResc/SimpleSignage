@@ -147,12 +147,15 @@ function queueJobs() {
     });
     // Turn TV Off - 1 Hour After Close
     var newCloseHour;
+    var newDayOfWeek;
     if (closeHour + 1 >= 24) {
       newCloseHour = closeHour - 23;
+      newDayOfWeek = i + 1;
     } else {
       newCloseHour = closeHour + 1;
+      newDayOfWeek = i;
     }
-    const b_obj = {minute: closeMin, hour: newCloseHour, dayOfWeek: i};
+    const b_obj = {minute: closeMin, hour: newCloseHour, dayOfWeek: newDayOfWeek};
     const b_job = schedule.scheduleJob(b_obj, function() {
       turnTVOff();
       killOMXPlayer();
@@ -164,13 +167,7 @@ function queueJobs() {
       showContent();
     });
     // Show screen saver - At close
-    var newCloseHour2;
-    if (closeHour >= 24) {
-      newCloseHour2 = closeHour - 24;
-    } else {
-      newCloseHour2 = closeHour;
-    }
-    const d_obj = {minute: closeMin, hour: newCloseHour2, dayOfWeek: i};
+    const d_obj = {minute: closeMin, hour: closeHour, dayOfWeek: i};
     const d_job = schedule.scheduleJob(d_obj, function() {
       killOMXPlayer();
       showScreenSaver();
