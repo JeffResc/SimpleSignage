@@ -35,6 +35,9 @@ const app = express();
 const adapter = new FileSync('/data/db.json');
 const db = low(adapter);
 
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: 'https://95ef4cb590c24f72bf88c396b13d1833@o359547.ingest.sentry.io/5288660' });
+
 /*
   ____        __             _ _
   |  _ \  ___ / _| __ _ _   _| | |_ ___
