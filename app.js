@@ -44,6 +44,8 @@ const db = low(adapter);
 
 */
 
+const LOG_DEBUG = true;
+
 const login_username = process.env.APP_LOGIN_USERNAME || 'admin';
 const login_password = process.env.APP_LOGIN_PASSWORD_HASH || 'oKBT2uSiERMmBCGDNlmNGnYKpv7zVQvL3hs3td5aeIk='; // Defaults to  'signage', use passwordHasher.js to create your own
 
@@ -213,9 +215,25 @@ function activateDisplay() {
 function showContent() {
   currentTask = 1;
   if (fs.existsSync('/data/contentFile.mp4')) {
-    exec('omxplayer --loop --no-osd /data/contentFile.mp4', (err, stdout, stderr) => {});
+    exec('omxplayer --loop --no-osd /data/contentFile.mp4', (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        console.error(stderr);
+      }
+      if (LOG_DEBUG) {
+        console.log(stdout);
+      }
+    });
   } else {
-    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {});
+    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        console.error(stderr);
+      }
+      if (LOG_DEBUG) {
+        console.log(stdout);
+      }
+    });
   }
   console.log('Content has been shown.');
 }
@@ -223,16 +241,40 @@ function showContent() {
 function showScreenSaver() {
   currentTask = 2;
   if (fs.existsSync('/data/screensaverFile.mp4')) {
-    exec('omxplayer --loop --no-osd /data/screensaverFile.mp4', (err, stdout, stderr) => {});
+    exec('omxplayer --loop --no-osd /data/screensaverFile.mp4', (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        console.error(stderr);
+      }
+      if (LOG_DEBUG) {
+        console.log(stdout);
+      }
+    });
   } else {
-    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {});
+    exec('omxplayer --loop --no-osd /usr/src/app/mediaAssets/NoMedia.mp4', (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        console.error(stderr);
+      }
+      if (LOG_DEBUG) {
+        console.log(stdout);
+      }
+    });
   }
   console.log('Screensaver has been shown.');
 }
 
 function killOMXPlayer() {
   console.log('OMXPlayer has been killed.');
-  exec('killall omxplayer.bin', (err, stdout, stderr) => {});
+  exec('killall omxplayer.bin', (err, stdout, stderr) => {
+    if (err) {
+      console.error(err);
+      console.error(stderr);
+    }
+    if (LOG_DEBUG) {
+      console.log(stdout);
+    }
+  });
 }
 
 function turnTVOff() {
@@ -261,6 +303,9 @@ function checkInternet() {
     if (error !== null)  {
       if (internetConnection) {
         console.error('INTERNET OFFLINE.');
+        killOMXPlayer();
+        showContent();
+        cancelAllJobs();
         internetConnection = !internetConnection;
         exec('/usr/src/app/pngview -b 0 -d 0 -l 3 -n -x 25 -y 25 /usr/src/app/mediaAssets/noWiFi.png', (error, stdout, stderr) => {
           if (error) {
@@ -270,9 +315,19 @@ function checkInternet() {
       }
     } else {
       if (!internetConnection) {
-        console.error('INTERNET BACK  ONLINE.');
+        console.error('INTERNET BACK ONLINE.');
+        killOMXPlayer();
+        activateDisplay();
         internetConnection = !internetConnection;
-        exec('killall pngview', (err, stdout, stderr) => {});
+        exec('killall pngview', (err, stdout, stderr) => {
+          if (err) {
+            console.error(err);
+            console.error(stderr);
+          }
+          if (LOG_DEBUG) {
+            console.log(stdout);
+          }
+        });
       }
     }
   });
