@@ -199,14 +199,18 @@ function activateDisplay() {
   const closeMin = parseInt(hours.__wrapped__.hours[0][dayNum].close.split(':')[1]);
   if (now > Date.parse((now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + ' ' + (openHour - 1) + ':' + openMin + ':00') && now < Date.parse((now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + ' ' + openHour + ':' + openMin + ':00')) {
     // 1 hour before open, play screensaver
+    turnTVOn();
     showScreenSaver();
   } else if (now > Date.parse((now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + ' ' + closeHour + ':' + closeMin + ':00') && now < Date.parse((now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + ' ' + (closeHour + 1) + ':' + closeMin + ':00')) {
     // 1 hour after close, play screensaver
+    turnTVOn();
     showScreenSaver();
   } else if (now > Date.parse((now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + ' ' + openHour + ':' + openMin + ':00') && now < Date.parse((now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + ' ' + closeHour + ':' + closeMin + ':00')) {
     // In business hours, play content
+    turnTVOn();
     showContent();
   } else {
+    turnTVOff();
     console.log('Outside active hours, doing nothing...');
   }
   queueJobs();
@@ -303,6 +307,7 @@ function checkInternet() {
     if (error !== null)  {
       if (internetConnection) {
         console.error('INTERNET OFFLINE.');
+        turnTVOn();
         killOMXPlayer();
         showContent();
         cancelAllJobs();
