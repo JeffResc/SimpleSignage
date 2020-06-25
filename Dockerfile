@@ -1,6 +1,6 @@
 FROM balenalib/raspberry-pi-debian-node:latest-jessie
 
-RUN apt-get update && apt-get install -y build-essential psmisc ifupdown omxplayer x11-xserver-utils xserver-xorg libraspberrypi0 libraspberrypi-dev raspberrypi-kernel-headers cec-utils libpng12-dev git-core --no-install-recommends && apt-get clean && rm -rf /var/lib/apt/*
+RUN apt-get update && apt-get install -y build-essential psmisc ifupdown omxplayer x11-xserver-utils xserver-xorg libraspberrypi0 libraspberrypi-dev raspberrypi-kernel-headers cec-utils libpng12-dev git-core wget --no-install-recommends && apt-get clean && rm -rf /var/lib/apt/*
 
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 

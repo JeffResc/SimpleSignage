@@ -313,9 +313,9 @@ function checkInternet() {
   child = exec('ping -c 1 8.8.8.8', function(error, stdout, stderr) {
     if (error !== null)  {
       if (internetConnection) {
+        killOMXPlayer();
         console.error('INTERNET OFFLINE.');
         turnTVOn();
-        killOMXPlayer();
         showContent();
         cancelAllJobs();
         internetConnection = !internetConnection;
@@ -329,17 +329,13 @@ function checkInternet() {
       if (!internetConnection) {
         console.error('INTERNET BACK ONLINE.');
         killOMXPlayer();
-        activateDisplay();
-        internetConnection = !internetConnection;
-        exec('killall pngview', (err, stdout, stderr) => {
-          if (err) {
-            console.error(err);
-            console.error(stderr);
-          }
-          if (LOG_DEBUG) {
-            console.log(stdout);
-          }
-        });
+        axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
+          .then((res) => {
+            console.log('Restarting...');
+          })
+          .catch((error) => {
+            console.error('Balena Reboot API Error: ' + error);
+          })
       }
     }
   });
