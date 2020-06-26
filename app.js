@@ -329,7 +329,7 @@ function checkInternet() {
       if (!internetConnection) {
         console.error('INTERNET BACK ONLINE.');
         killOMXPlayer();
-        axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
+        axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY, {"appId": process.env.BALENA_APP_ID})
           .then((res) => {
             console.log('Restarting...');
           })
@@ -390,7 +390,7 @@ app.post('/forms/dashboardActions', function(req, res) {
     setTimeout(function() {
       axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/reboot?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
         .then((res) => {
-          console.log('Restarting...');
+          console.log('Rebooting...');
         })
         .catch((error) => {
           console.error('Balena Reboot API Error: ' + error);
