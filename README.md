@@ -1,3 +1,4 @@
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=JeffResc/SimpleSignage)](https://dependabot.com)
 # SimpleSignage
 A simple signage display program built for Raspberry Pis
 
