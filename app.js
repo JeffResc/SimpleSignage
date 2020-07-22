@@ -9,12 +9,12 @@
 */
 
 /*
-____                  _
+ ____                  _
 |  _ \ ___  __ _ _   _(_)_ __ ___  ___
 | |_) / _ \/ _` | | | | | '__/ _ \/ __|
 |  _ <  __/ (_| | |_| | | | |  __/\__ \
 |_| \_\___|\__, |\__,_|_|_|  \___||___/
-             |_|
+              |_|
 */
 
 const {
@@ -276,6 +276,7 @@ function showScreenSaver() {
 }
 
 function killOMXPlayer() {
+  currentTask = 0;
   console.log('OMXPlayer has been killed.');
   exec('killall omxplayer.bin', (err, stdout, stderr) => {
     if (err) {
@@ -313,10 +314,12 @@ function checkInternet() {
   child = exec('ping -c 1 8.8.8.8', function(error, stdout, stderr) {
     if (error !== null)  {
       if (internetConnection) {
-        killOMXPlayer();
         console.error('INTERNET OFFLINE.');
-        turnTVOn();
-        showContent();
+        if (currentTask !== 1) {
+          killOMXPlayer();
+          turnTVOn();
+          showContent();
+        }
         cancelAllJobs();
         internetConnection = !internetConnection;
         exec('/usr/src/app/pngview -b 0 -d 0 -l 3 -n -x 25 -y 25 /usr/src/app/mediaAssets/noWiFi.png', (error, stdout, stderr) => {
