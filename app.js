@@ -322,11 +322,6 @@ function checkInternet() {
         }
         cancelAllJobs();
         internetConnection = !internetConnection;
-        exec('/usr/src/app/pngview -b 0 -d 0 -l 3 -n -x 25 -y 25 /usr/src/app/mediaAssets/noWiFi.png', (error, stdout, stderr) => {
-          if (error) {
-            console.error('Unable to enable no wifi overlay: ' + error);
-          }
-        });
       }
     } else {
       if (!internetConnection) {
@@ -338,6 +333,7 @@ function checkInternet() {
           .catch((error) => {
             console.error('Balena Reboot API Error: ' + error);
           })
+        internetConnection = !internetConnection;
       }
     }
   });

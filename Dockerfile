@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y build-essential psmisc ifupdown omxplay
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 
 RUN git clone https://github.com/AndrewFromMelbourne/raspi2png /usr/src/app/raspi2png && cd /usr/src/app/raspi2png && make && make install && rm -rf /usr/src/app/raspi2png
-RUN git clone https://github.com/AndrewFromMelbourne/raspidmx /usr/src/app/raspidmx && cd /usr/src/app/raspidmx && make && mv pngview/pngview /usr/src/app && rm -rf /usr/src/app/raspidmx
 
 COPY util/X.service /etc/systemd/system/X.service
 COPY . /usr/src/app
