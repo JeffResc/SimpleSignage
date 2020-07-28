@@ -326,13 +326,13 @@ function checkInternet() {
     } else {
       if (!internetConnection) {
         console.error('INTERNET BACK ONLINE.');
-        axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY, {"appId": process.env.BALENA_APP_ID})
+        /*axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY, {"appId": process.env.BALENA_APP_ID})
           .then((res) => {
             console.log('Restarting...');
           })
           .catch((error) => {
             console.error('Balena Reboot API Error: ' + error);
-          })
+          })*/
         internetConnection = !internetConnection;
       }
     }
