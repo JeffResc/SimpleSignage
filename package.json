@@ -5,7 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "axios": "^0.20.0",
-    "@sentry/node": "^5.21.4",
+    "@sentry/node": "^5.22.3",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
