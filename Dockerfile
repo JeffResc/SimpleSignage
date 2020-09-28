@@ -9,7 +9,7 @@ RUN git clone https://github.com/AndrewFromMelbourne/raspi2png /usr/src/app/rasp
 COPY util/X.service /etc/systemd/system/X.service
 COPY . /usr/src/app
 RUN cd /usr/src/app && npm install && npm cache clean --force
-RUN cd /usr/src/app && rm -rf demo.png util mediaAssets/NoMedia.pptx
+RUN cd /usr/src/app && rm -rf util
 
 ENV INITSYSTEM on
 

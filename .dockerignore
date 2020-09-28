@@ -1,1 +1,4 @@
 node_modules/
+demo.png
+mediaAssets/*.pptx
+passwordHasher.js
