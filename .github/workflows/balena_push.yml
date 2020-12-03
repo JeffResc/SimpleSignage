@@ -1,16 +1,17 @@
-name: Push to Balena
-on: [push]
+name: BalenaCloud Push
+on:
+  push:
+    # Only run workflow for pushes to specific branches
+    branches:
+      - master
 jobs:
-  build:
-    name: Push
+  balena-push:
     runs-on: ubuntu-latest
     steps:
-    - name: Install SSH key
-      uses: shimataro/ssh-key-action@v2
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1.1.0
+    - uses: theaccordance/balena-push@v1.0.0
       with:
-        key: ${{ secrets.SSH_KEY }}
-        name: id_rsa
-    - name: Git Add Remote
-      run: git remote add balena ${{ secrets.BALENA_REPOSITORY }}
-    - name: Git Push
-      run: git push balena master
+        api-token: ${{secrets.BALENA_API_TOKEN}}
+        application-name: ${{secrets.BALENA_APPLICATION_NAME}}
+        application-path: "."
