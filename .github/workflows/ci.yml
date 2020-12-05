@@ -24,7 +24,6 @@ jobs:
   balena-deploy:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-    needs: [build-image]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
