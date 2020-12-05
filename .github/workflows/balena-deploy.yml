@@ -10,13 +10,11 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-      - name: Setup NodeJS 💎
-        uses: actions/setup-node@v1.4.4
-        with:
-          node-version: '14'
       - name: Balena Deploy 🚀
-        uses: theaccordance/balena-push@v1.0.0
-        with:
-          api-token: ${{secrets.BALENA_API_TOKEN}}
-          application-name: ${{secrets.BALENA_APPLICATION_NAME}}
-          application-path: "./"
+        run: |
+          curl -L -o /tmp/balena.zip https://github.com/balena-io/balena-cli/releases/download/v12.29.1/balena-cli-v12.29.1-linux-x64-standalone.zip
+          unzip /tmp/balena.zip -d /opt
+          rm /tmp/balena.zip
+          export PATH=$PATH:/opt/balena-cli
+          balena login --token ${{secrets.BALENA_TOKEN}}
+          balena push ${{secrets.BALENA_APPLICATION_NAME}}
