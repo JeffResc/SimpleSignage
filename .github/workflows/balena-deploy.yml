@@ -16,5 +16,5 @@ jobs:
           unzip /tmp/balena.zip -d /opt
           rm /tmp/balena.zip
           export PATH=$PATH:/opt/balena-cli
-          balena login --token ${{secrets.BALENA_TOKEN}}
+          balena login --token ${{secrets.BALENA_API_TOKEN}}
           balena push ${{secrets.BALENA_APPLICATION_NAME}}
