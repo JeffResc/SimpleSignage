@@ -1,12 +1,21 @@
-name: BalenaCloud Deploy
+name: CI
 
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . -t SimpleSignage:$(date +%s)
   balena-deploy:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
