@@ -28,7 +28,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
       - name: Setup NodeJS 💎
-        uses: actions/setup-node@v1.1.0
+        uses: actions/setup-node@v1.4.4
       - name: Balena Deploy 🚀
         uses: theaccordance/balena-push@v1.0.0
         with:
