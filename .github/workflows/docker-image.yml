@@ -1,0 +1,22 @@
+name: Docker Image Build 🐋
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
+    - name: Set up QEMU 🔧
+      id: qemu
+      uses: docker/setup-qemu-action@v1
+      with:
+        image: tonistiigi/binfmt:latest
+        platforms: all
+    - name: Build the Docker image 🐋
+      run: docker build . -t simplesignage:$(date +%s)
+ 
+
