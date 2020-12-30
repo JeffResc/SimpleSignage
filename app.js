@@ -31,7 +31,6 @@ const axios = require('axios');
 const fileUpload = require('express-fileupload');
 const crypto = require('crypto');
 const qs = require('querystring');
-const dns = require('dns');
 
 const app = express();
 const adapter = new FileSync('/data/db.json');
