@@ -31,8 +31,6 @@ const axios = require('axios');
 const fileUpload = require('express-fileupload');
 const crypto = require('crypto');
 const qs = require('querystring');
-const ntpClient = require('ntp-client');
-const DateTimeControl = require('set-system-clock');
 
 const app = express();
 const adapter = new FileSync('/data/db.json');
@@ -102,18 +100,6 @@ db.defaults({
   |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
 
 */
-
-function syncSystemTime() {
-  ntpClient.getNetworkTime("pool.ntp.org", 123, function (err, date) {
-    if (err) {
-      console.error('Error syncing system time: ' + err);
-      return;
-    }
-
-    console.log("Current sync time: " + date);
-    DateTimeControl.setDateTime(date);
-  });
-}
 
 function timeToDb(time) {
   if (time.split(' ')[1] == 'AM') {
@@ -339,16 +325,15 @@ function checkInternet() {
     } else {
       if (!internetConnection) {
         // Internet online
-        syncSystemTime();
         if (currentTask !== 1) {
           setTimeout(function () {
             killOMXPlayer();
             activateDisplay();
-          }, 10000);
+          }, 60000);
         }
         setTimeout(function () {
           queueJobs();
-        }, 10000);
+        }, 60000);
         internetConnection = !internetConnection;
       }
     }
@@ -661,6 +646,5 @@ setInterval(function () {
 }, 120 * 1000);
 
 app.listen(80);
-syncSystemTime();
 activateDisplay();
 checkInternet();
