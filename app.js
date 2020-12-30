@@ -32,7 +32,7 @@ const fileUpload = require('express-fileupload');
 const crypto = require('crypto');
 const qs = require('querystring');
 const ntpClient = require('ntp-client');
-const systemClock = require('system-clock');
+const DateTimeControl = require('set-system-clock');
 
 const app = express();
 const adapter = new FileSync('/data/db.json');
@@ -111,7 +111,7 @@ function syncSystemTime() {
     }
 
     console.log("Current sync time: " + date);
-    systemClock.setDateAndTime(date.getDay(), date.getMonth(), date.getFullYear(), date.getHours(), date.getMinutes(), date.getSeconds());
+    DateTimeControl.setDateTime(date);
   });
 }
 
