@@ -2,7 +2,7 @@ name: Balena Deploy 🚀
 
 on:
   push:
-    branches: [ master ]
+    branches: [ production ]
 
 jobs:
   balena-deploy:
