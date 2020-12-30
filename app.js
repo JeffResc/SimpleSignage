@@ -313,7 +313,7 @@ function checkInternet() {
   child = exec('ping -c 1 8.8.8.8', function(error, stdout, stderr) {
     if (error !== null)  {
       if (internetConnection) {
-        console.error('INTERNET OFFLINE.');
+        // Internet Offline
         if (currentTask !== 1) {
           killOMXPlayer();
           turnTVOn();
@@ -324,17 +324,16 @@ function checkInternet() {
       }
     } else {
       if (!internetConnection) {
-        console.log('INTERNET BACK ONLINE.');
-        /*axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY, {"appId": process.env.BALENA_APP_ID})
-          .then((res) => {
-            console.log('Restarting...');
-          })
-          .catch((error) => {
-            console.error('Balena Reboot API Error: ' + error);
-          })*/
-		setTimeout(function() {
-			activateDisplay();
-		}, 60000)
+        // Internet online
+        if (currentTask !== 1) {
+          setTimeout(function() {
+            killOMXPlayer();
+            activateDisplay();
+          }, 60000);
+        }
+        setTimeout(function() {
+          queueJobs();
+        }, 60000);
         internetConnection = !internetConnection;
       }
     }
