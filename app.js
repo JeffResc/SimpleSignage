@@ -332,9 +332,9 @@ function checkInternet() {
           .catch((error) => {
             console.error('Balena Reboot API Error: ' + error);
           })*/
-		setTimeout(function() {
-			activateDisplay();
-		}, 60000)
+        setTimeout(function () {
+          activateDisplay();
+        }, 60000);
         internetConnection = !internetConnection;
       }
     }
