@@ -147,8 +147,8 @@ function queueJobs() {
     const closeHour = parseInt(hours.__wrapped__.hours[0][i].close.split(':')[0]);
     const closeMin = parseInt(hours.__wrapped__.hours[0][i].close.split(':')[1]);
     // Turn TV On - 1 Hour Before Open
-    const a_obj = {minute: openMin, hour: openHour - 1, dayOfWeek: i};
-    const a_job = schedule.scheduleJob(a_obj, function() {
+    const a_obj = { minute: openMin, hour: openHour - 1, dayOfWeek: i };
+    const a_job = schedule.scheduleJob(a_obj, function () {
       turnTVOn();
       killOMXPlayer();
       showScreenSaver();
@@ -163,20 +163,20 @@ function queueJobs() {
       newCloseHour = closeHour + 1;
       newDayOfWeek = i;
     }
-    const b_obj = {minute: closeMin, hour: newCloseHour, dayOfWeek: newDayOfWeek};
-    const b_job = schedule.scheduleJob(b_obj, function() {
+    const b_obj = { minute: closeMin, hour: newCloseHour, dayOfWeek: newDayOfWeek };
+    const b_job = schedule.scheduleJob(b_obj, function () {
       turnTVOff();
       killOMXPlayer();
     });
     // Show Menu - At open
-    const c_obj = {minute: openMin, hour: openHour, dayOfWeek: i};
-    const c_job = schedule.scheduleJob(c_obj, function() {
+    const c_obj = { minute: openMin, hour: openHour, dayOfWeek: i };
+    const c_job = schedule.scheduleJob(c_obj, function () {
       killOMXPlayer();
       showContent();
     });
     // Show screen saver - At close
-    const d_obj = {minute: closeMin, hour: closeHour, dayOfWeek: i};
-    const d_job = schedule.scheduleJob(d_obj, function() {
+    const d_obj = { minute: closeMin, hour: closeHour, dayOfWeek: i };
+    const d_job = schedule.scheduleJob(d_obj, function () {
       killOMXPlayer();
       showScreenSaver();
     });
@@ -310,8 +310,8 @@ function turnTVOn() {
 
 function checkInternet() {
   var exec = require('child_process').exec, child;
-  child = exec('ping -c 1 8.8.8.8', function(error, stdout, stderr) {
-    if (error !== null)  {
+  child = exec('ping -c 1 8.8.8.8', function (error, stdout, stderr) {
+    if (error !== null) {
       if (internetConnection) {
         // Internet Offline
         if (currentTask !== 1) {
@@ -326,12 +326,12 @@ function checkInternet() {
       if (!internetConnection) {
         // Internet online
         if (currentTask !== 1) {
-          setTimeout(function() {
+          setTimeout(function () {
             killOMXPlayer();
             activateDisplay();
           }, 60000);
         }
-        setTimeout(function() {
+        setTimeout(function () {
           queueJobs();
         }, 60000);
         internetConnection = !internetConnection;
@@ -363,7 +363,7 @@ app.use(basicAuth({
   challenge: true
 }))
 
-app.post('/forms/dashboardActions', function(req, res) {
+app.post('/forms/dashboardActions', function (req, res) {
   if (req.body.startContent == '') {
     killOMXPlayer();
     showContent();
@@ -386,7 +386,7 @@ app.post('/forms/dashboardActions', function(req, res) {
     turnTVOn();
     res.redirect('/?message=' + encodeURI('TV turned on.'));
   } else if (req.body.reboot == '') {
-    setTimeout(function() {
+    setTimeout(function () {
       axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/reboot?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
         .then((res) => {
           console.log('Rebooting...');
@@ -399,7 +399,7 @@ app.post('/forms/dashboardActions', function(req, res) {
   }
 });
 
-app.post('/forms/postHours', function(req, res) {
+app.post('/forms/postHours', function (req, res) {
   console.log('Recieved updated hours.');
   var hours = {};
   hours[0] = {
@@ -454,14 +454,14 @@ app.post('/forms/postHours', function(req, res) {
     //var messsage;
     devices.forEach(uuid => {
       axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', qs.stringify(requestBody), {
-          auth: {
-            username: login_username,
-            password: login_password
-          },
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        })
+        auth: {
+          username: login_username,
+          password: login_password
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
         .then((res) => {
           if (typeof res.statusCode !== 'undefined') {
             console.error('Error syncing hours with ' + uuid.substring(0, 7) + ': ' + res.statusCode);
@@ -486,7 +486,7 @@ app.post('/forms/postHours', function(req, res) {
   res.redirect('/?message=' + encodeURI('Hours successfully updated.'));
 });
 
-app.post('/upload/content', function(req, res) {
+app.post('/upload/content', function (req, res) {
   let contentFile = req.files.contentFile;
   if (currentTask == 1) {
     killOMXPlayer();
@@ -494,7 +494,7 @@ app.post('/upload/content', function(req, res) {
   if (fs.existsSync('/data/contentFile.mp4')) {
     fs.unlinkSync('/data/contentFile.mp4');
   }
-  contentFile.mv('/data/contentFile.mp4', function(err) {
+  contentFile.mv('/data/contentFile.mp4', function (err) {
     if (err) {
       return res.redirect('/?message=' + encodeURI('Error uploading new content: ' + err));
     }
@@ -505,7 +505,7 @@ app.post('/upload/content', function(req, res) {
   });
 });
 
-app.post('/upload/screensaver', function(req, res) {
+app.post('/upload/screensaver', function (req, res) {
   let screensaverFile = req.files.screensaverFile;
   if (currentTask == 2) {
     killOMXPlayer();
@@ -513,7 +513,7 @@ app.post('/upload/screensaver', function(req, res) {
   if (fs.existsSync('/data/screensaverFile.mp4')) {
     fs.unlinkSync('/data/screensaverFile.mp4');
   }
-  screensaverFile.mv('/data/screensaverFile.mp4', function(err) {
+  screensaverFile.mv('/data/screensaverFile.mp4', function (err) {
     if (err) {
       return res.redirect('/?message=' + encodeURI('Error uploading new screensaver: ' + err));
     }
@@ -524,7 +524,7 @@ app.post('/upload/screensaver', function(req, res) {
   });
 });
 
-app.get('/download/content', function(req, res) {
+app.get('/download/content', function (req, res) {
   if (fs.existsSync('/data/contentFile.mp4')) {
     res.download('/data/contentFile.mp4');
   } else {
@@ -532,7 +532,7 @@ app.get('/download/content', function(req, res) {
   }
 });
 
-app.get('/download/screensaver', function(req, res) {
+app.get('/download/screensaver', function (req, res) {
   if (fs.existsSync('/data/screensaverFile.mp4')) {
     res.download('/data/screensaverFile.mp4');
   } else {
@@ -540,7 +540,7 @@ app.get('/download/screensaver', function(req, res) {
   }
 });
 
-app.get('/delete/content', function(req, res) {
+app.get('/delete/content', function (req, res) {
   if (fs.existsSync('/data/contentFile.mp4')) {
     fs.unlinkSync('/data/contentFile.mp4');
     res.redirect('/?message=' + encodeURI('Content deleted.'));
@@ -549,7 +549,7 @@ app.get('/delete/content', function(req, res) {
   }
 });
 
-app.get('/delete/screensaver', function(req, res) {
+app.get('/delete/screensaver', function (req, res) {
   if (fs.existsSync('/data/screensaverFile.mp4')) {
     fs.unlinkSync('/data/screensaverFile.mp4');
   } else {
@@ -557,14 +557,14 @@ app.get('/delete/screensaver', function(req, res) {
   }
 });
 
-app.get('/view.png', function(req, res) {
+app.get('/view.png', function (req, res) {
   const rand = Math.floor(1000 + Math.random() * 9000);
   exec('raspi2png --compression 9 --height 270 --width 480 --pngname /tmp/view_' + rand + '.png', (error, stdout, stderr) => {
     if (error) {
       res.status(500).send('Cannot execute raspi2png: ' + stderr);
     } else {
       res.sendFile('/tmp/view_' + rand + '.png');
-      setTimeout(function() {
+      setTimeout(function () {
         if (fs.existsSync('/tmp/view_' + rand + '.png')) {
           fs.unlinkSync('/tmp/view_' + rand + '.png');
         }
@@ -573,7 +573,7 @@ app.get('/view.png', function(req, res) {
   });
 });
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   const dbHours = db.get('hours');
   const uuid = process.env.BALENA_DEVICE_UUID || 'Unknown';
   const appId = process.env.BALENA_APP_ID || 'Unknown';
@@ -628,7 +628,7 @@ app.get('/', function(req, res) {
   }
   res.render('dashboard', resVars);
 });
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.status(404).render('404');
 });
 
@@ -641,7 +641,7 @@ app.use(function(req, res, next) {
                                |_|
 */
 
-setInterval(function() {
+setInterval(function () {
   checkInternet();
 }, 120 * 1000);
 
