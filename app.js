@@ -55,7 +55,7 @@ const LOG_DEBUG = process.env.LOG_DEBUG || 0;
 const login_username = process.env.APP_LOGIN_USERNAME || 'admin';
 const login_password = process.env.APP_LOGIN_PASSWORD_HASH || 'oKBT2uSiERMmBCGDNlmNGnYKpv7zVQvL3hs3td5aeIk='; // Defaults to  'signage', use passwordHasher.js to create your own
 
-internetConnection = true;
+//internetConnection = true;
 currentTask = 0;
 JobsArray = [];
 
@@ -309,7 +309,7 @@ function turnTVOn() {
 }
 
 function checkInternet() {
-  var exec = require('child_process').exec, child;
+  /*var exec = require('child_process').exec, child;
   child = exec('ping -c 1 8.8.8.8', function (error, stdout, stderr) {
     if (error !== null) {
       if (internetConnection) {
@@ -325,20 +325,20 @@ function checkInternet() {
     } else {
       if (!internetConnection) {
         console.log('INTERNET BACK ONLINE.');
-        /*axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY, {"appId": process.env.BALENA_APP_ID})
+        axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY, {"appId": process.env.BALENA_APP_ID})
           .then((res) => {
             console.log('Restarting...');
           })
           .catch((error) => {
             console.error('Balena Reboot API Error: ' + error);
-          })*/
+          })
         setTimeout(function () {
           activateDisplay();
         }, 60000);
         internetConnection = !internetConnection;
       }
     }
-  });
+  });*/
 }
 
 /*
