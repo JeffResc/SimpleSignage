@@ -1,5 +1,11 @@
 name: Docker Image Build 🐋
 
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master, production ]
+
 jobs:
   build-image:
     runs-on: ubuntu-latest
