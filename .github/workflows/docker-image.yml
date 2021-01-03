@@ -1,9 +1,5 @@
 name: Docker Image Build 🐋
 
-on:
-  pull_request:
-    branches: [ master ]
-
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -16,7 +12,12 @@ jobs:
       with:
         image: tonistiigi/binfmt:latest
         platforms: all
-    - name: Build the Docker image 🐋
-      run: docker build . -t simplesignage:$(date +%s)
- 
-
+    - name: Build the Docker Image 🐋
+      run: IMGTAG=$(date +%s) && docker build . -t simplesignage:$IMGTAG
+    - name: Save the Docker Image 💾
+      run: docker save simplesignage:$IMGTAG > SimpleSignage.tar
+    - name: Upload Docker Image ✈
+      uses: actions/upload-artifact@v2
+      with:
+        name: docker-image
+        path: ./SimpleSignage.tar
