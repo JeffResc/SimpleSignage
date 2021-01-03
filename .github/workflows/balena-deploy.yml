@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
+      - name: Checkout submodules 🛎️
+        uses: textbook/git-checkout-submodule-action@master
       - name: Balena Deploy 🚀
         run: |
           curl -L -o /tmp/balena.zip https://github.com/balena-io/balena-cli/releases/download/v12.29.1/balena-cli-v12.29.1-linux-x64-standalone.zip

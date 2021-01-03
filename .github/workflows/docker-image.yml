@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout 🛎️
       uses: actions/checkout@v2
+    - name: Checkout submodules 🛎️
+      uses: textbook/git-checkout-submodule-action@master
     - name: Set up QEMU 🔧
       id: qemu
       uses: docker/setup-qemu-action@v1
