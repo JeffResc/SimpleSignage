@@ -19,9 +19,9 @@ jobs:
         image: tonistiigi/binfmt:latest
         platforms: all
     - name: Build the Docker Image 🐋
-      run: IMGTAG=$(date +%s) && docker build . -t simplesignage:$IMGTAG
+      run: docker build . -t simplesignage
     - name: Save the Docker Image 💾
-      run: docker save simplesignage:$IMGTAG > SimpleSignage.tar
+      run: docker save simplesignage > SimpleSignage.tar
     - name: Upload Docker Image ✈
       uses: actions/upload-artifact@v2
       with:
