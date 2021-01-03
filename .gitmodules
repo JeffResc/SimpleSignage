@@ -1,0 +1,3 @@
+[submodule "raspi2png"]
+	path = raspi2png
+	url = https://github.com/AndrewFromMelbourne/raspi2png
