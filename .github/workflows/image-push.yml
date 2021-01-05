@@ -30,6 +30,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: $GITHUB_REPOSITORY/simplesignage
+          tags: ${{ GITHUB_REPOSITORY }}/simplesignage
       - name: Image digest 🤓
         run: echo ${{ steps.docker_build.outputs.digest }}
