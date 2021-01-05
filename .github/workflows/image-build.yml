@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ master ]
   push:
-    branches: [ master, production ]
+    branches: [ master ]
 
 jobs:
   build-image:
@@ -29,17 +29,3 @@ jobs:
       with:
         name: docker-image
         path: ./SimpleSignage.tar
-    image-push:
-      if: github.ref == 'refs/heads/production'
-      runs-on: ubuntu-latest
-      steps:
-        - name: Check out the repo
-          uses: actions/checkout@v2
-        - name: Push to GitHub Packages
-          uses: docker/build-push-action@v1
-          with:
-            username: ${{ github.actor }}
-            password: ${{ secrets.GITHUB_TOKEN }}
-            registry: docker.pkg.github.com
-            repository: JeffResc/SimpleSignage/simplesignage
-            tag_with_ref: true
