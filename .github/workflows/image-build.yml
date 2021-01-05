@@ -1,4 +1,4 @@
-name: Image Build 🐋
+name: Docker Image Build 🐋
 
 on:
   pull_request:
