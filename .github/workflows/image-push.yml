@@ -30,6 +30,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: simplesignage
+          tags: jeffresc/simplesignage:production
       - name: Image digest 🤓
         run: echo ${{ steps.docker_build.outputs.digest }}
