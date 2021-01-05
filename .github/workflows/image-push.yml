@@ -1,0 +1,22 @@
+name: Balena Deploy 🚀
+
+on:
+  push:
+    branches: [ production ]
+
+jobs:
+  image-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+      uses: actions/checkout@v2
+      - name: Checkout submodules 🛎️
+        uses: textbook/git-checkout-submodule-action@master
+      - name: Push to GitHub Packages 🚀
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: JeffResc/SimpleSignage/simplesignage
+          tag_with_ref: true
