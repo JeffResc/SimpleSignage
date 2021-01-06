@@ -356,13 +356,18 @@ app.post('/forms/dashboardActions', function (req, res) {
     res.redirect('/?message=' + encodeURI('TV turned on.'));
   } else if (req.body.reboot == '') {
     setTimeout(function () {
-      axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/reboot?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
-        .then((res) => {
-          console.log('Rebooting...');
-        })
-        .catch((error) => {
-          console.error('Balena Reboot API Error: ' + error);
-        })
+      if (process.env.BALENA !== 'undefined' && process.env.BALENA == 1) {
+        axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/reboot?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY)
+          .then((res) => {
+            console.log('Rebooting...');
+          })
+          .catch((error) => {
+            console.error('Balena Reboot API Error: ' + error);
+          })
+      } else {
+        console.log("Stopping process for a restart...");
+        process.exit(1);
+      }
     }, 3000);
     res.redirect('/?message=' + encodeURI('Shutting down...'));
   }
@@ -600,7 +605,7 @@ app.get('/', function (req, res) {
     resVars.message = message;
   }
   const table = process.env.BALENA ? "balenaTable" : "normalTable";
-  ejs.renderFile(path.join(__dirname, 'views', 'partials', table + '.ejs'), resVars, {}, function(err, str){
+  ejs.renderFile(path.join(__dirname, 'views', 'partials', table + '.ejs'), resVars, {}, function (err, str) {
     if (err) throw err;
     resVars.renderTable = str;
     res.render('dashboard', resVars);
