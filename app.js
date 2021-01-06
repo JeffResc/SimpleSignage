@@ -308,39 +308,6 @@ function turnTVOn() {
   });
 }
 
-function checkInternet() {
-  /*var exec = require('child_process').exec, child;
-  child = exec('ping -c 1 8.8.8.8', function (error, stdout, stderr) {
-    if (error !== null) {
-      if (internetConnection) {
-        console.error('INTERNET OFFLINE.');
-        if (currentTask !== 1) {
-          killOMXPlayer();
-          turnTVOn();
-          showContent();
-        }
-        cancelAllJobs();
-        internetConnection = !internetConnection;
-      }
-    } else {
-      if (!internetConnection) {
-        console.log('INTERNET BACK ONLINE.');
-        axios.post(process.env.BALENA_SUPERVISOR_ADDRESS + '/v1/restart?apikey=' + process.env.BALENA_SUPERVISOR_API_KEY, {"appId": process.env.BALENA_APP_ID})
-          .then((res) => {
-            console.log('Restarting...');
-          })
-          .catch((error) => {
-            console.error('Balena Reboot API Error: ' + error);
-          })
-        setTimeout(function () {
-          activateDisplay();
-        }, 60000);
-        internetConnection = !internetConnection;
-      }
-    }
-  });*/
-}
-
 /*
 __        __   _       ____
 \ \      / /__| |__   / ___|  ___ _ ____   _____ _ __
@@ -642,10 +609,5 @@ app.use(function (req, res, next) {
                                 |_|
 */
 
-setInterval(function () {
-  checkInternet();
-}, 120 * 1000);
-
 app.listen(80);
 activateDisplay();
-checkInternet();
