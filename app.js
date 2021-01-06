@@ -31,6 +31,7 @@ const axios = require('axios');
 const fileUpload = require('express-fileupload');
 const crypto = require('crypto');
 const qs = require('querystring');
+const os = require('os');
 
 const app = express();
 const adapter = new FileSync('/data/db.json');
@@ -419,7 +420,6 @@ app.post('/forms/postHours', function (req, res) {
       devices.splice(index, 1);
     }
     console.log(devices);
-    //var messsage;
     devices.forEach(uuid => {
       axios.post('https://' + uuid + '.balena-devices.com/forms/postHours', qs.stringify(requestBody), {
         auth: {
@@ -589,13 +589,24 @@ app.get('/', function (req, res) {
     hostOSVersion: hostOSVersion,
     hours: hours,
     contentValid: contentValid,
-    screenSaverValid: screenSaverValid
+    screenSaverValid: screenSaverValid,
+    osArch: os.arch(),
+    osHost: os.hostname(),
+    osPlatform: os.platform(),
+    osRelease: os.release(),
+    osVer: os.version()
   }
   if (typeof message !== 'undefined' && message) {
     resVars.message = message;
   }
-  res.render('dashboard', resVars);
+  const table = process.env.BALENA ? "balenaTable" : "normalTable";
+  ejs.renderFile(path.join(__dirname, 'views', 'partials', table + '.ejs'), resVars, {}, function(err, str){
+    if (err) throw err;
+    resVars.renderTable = str;
+    res.render('dashboard', resVars);
+  });
 });
+
 app.use(function (req, res, next) {
   res.status(404).render('404');
 });
