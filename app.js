@@ -330,7 +330,7 @@ app.use('/pages', express.static(__dirname + '/views'));
 app.use(basicAuth({
   authorizer: myAuthorizer,
   challenge: true
-}))
+}));
 
 app.post('/forms/dashboardActions', function (req, res) {
   if (req.body.startContent == '') {

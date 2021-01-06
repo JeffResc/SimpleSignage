@@ -17,4 +17,5 @@ RUN cd /usr/src/app && rm -rf util
 
 ENV INITSYSTEM on
 
+HEALTHCHECK --interval=1m --timeout=5s CMD wget --http-user=$APP_LOGIN_USERNAME --http-password=$APP_LOGIN_PASSWORD_HASH --no-verbose --tries=1 --spider http://localhost/ || exit 1
 CMD ["node", "/usr/src/app/app.js"]
